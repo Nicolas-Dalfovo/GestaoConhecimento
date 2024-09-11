@@ -21,8 +21,8 @@ def load_database():
     return df
 
 
-st.session_state['dimensao_tempo'] = ['Order Date', 'Ship Date']
-st.session_state['medida'] = ['Units Sold', 'Total Profit']
+st.session_state['dimensao_tempo'] = ['Order Date', 'Ship Date', 'Order Month', 'Ship Month']
+st.session_state['medida'] = ['Units Sold', 'Total Profit', 'Total Revenue']
 st.session_state['agregador'] = ['sum', 'mean', 'count', 'min', 'max']
 st.set_page_config(page_title="Gestão do Conhecimento", layout="wide")
 st.session_state['df'] = load_database()
@@ -39,6 +39,12 @@ pg = st.navigation(
             st.Page(page='introducao/dashboard.py', title='Dashboard', icon=':material/help:'),
             st.Page(page='introducao/visualizacao.py', title='Visualização', icon=':material/help:'),
         ],
+        "Visualização":[
+            st.Page(page='visualizacao/descritiva.py', title='Analise Descritiva', icon=':material/house:'),
+            st.Page(page='visualizacao/diagnostica.py', title='Analise diagnostica', icon=':material/house:'),
+            st.Page(page='visualizacao/preditiva.py', title='Analise Preditiva', icon=':material/house:'),
+            st.Page(page='visualizacao/preescritiva.py', title='Analise Preescritiva', icon=':material/house:'),
+        ]
     }
 )
 pg.run()

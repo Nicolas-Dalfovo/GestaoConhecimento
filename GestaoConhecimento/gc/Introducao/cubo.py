@@ -1,15 +1,24 @@
 import pandas as pd
 import streamlit as st
 
-dimensao = ['Sales Channel','Order Date', 'Ship Date', 'Country', 'Item Type']
-medida = ['Units Sold', 'Total Profit']
-agregador = ['sum', 'mean', 'count', 'min', 'max']
 
 cols = st.columns(4)
-linhas = cols[0].multiselect('Dimensôes Linha', dimensao)
-colunas = cols[1].multiselect('Dimensôes Coluna', dimensao)
-valor = cols[2].selectbox('Medidas', medida)
-agg = cols[3].selectbox('Agregador', agregador)
+linhas = cols[0].multiselect(
+    'Dimensões Linha',
+    st.session_state['dimensao']
+)
+colunas = cols[1].multiselect(
+    'Dimensões Coluna',
+    st.session_state['dimensao'] + st.session_state['dimensao_tempo']
+)
+valor = cols[2].selectbox(
+    'Medidas',
+    st.session_state['medida']
+)
+agg = cols[3].selectbox(
+    'Agregador',
+    st.session_state['agregador']
+)
 if (len(linhas) > 0) & (len(colunas) > 0) & (linhas != colunas):
     st.dataframe(
         st.session_state['df'].pivot_table(
@@ -19,4 +28,7 @@ if (len(linhas) > 0) & (len(colunas) > 0) & (linhas != colunas):
             aggfunc=agg,
             fill_value=0
         )
+    )
+    st.dataframe(
+        st.session_state['df'].groupby(linhas)[valor].sum().reset_index()
     )
